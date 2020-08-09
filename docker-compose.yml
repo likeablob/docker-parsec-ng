@@ -1,0 +1,18 @@
+version: "3"
+services:
+  parsec:
+    build: .
+    volumes:
+      - /dev:/dev # FIXME: An ugly hack to enable va-api acceleration
+      - /tmp/.X11-unix/:/tmp/.X11-unix/
+      - /run/user/${UID}/pulse:/run/pulse:ro
+      - ./home_dir:/home_dir:rw
+    devices:
+      - /dev/dri
+    user: ${UID}:${GID}
+    environment:
+      DISPLAY: $DISPLAY
+      UID: ${UID}
+      GID: ${GID}
+      HOME: /home_dir
+    network_mode: host
